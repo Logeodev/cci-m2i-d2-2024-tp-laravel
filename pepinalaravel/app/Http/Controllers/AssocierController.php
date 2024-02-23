@@ -12,7 +12,8 @@ class AssocierController extends Controller
      */
     public function index()
     {
-        $this->render("index");
+        $users = User::all();
+        return $this->render("index", ["users"=> $users]);
     }
 
     /**
@@ -20,7 +21,7 @@ class AssocierController extends Controller
      */
     public function create()
     {
-        $this->render("create");
+        return $this->render("create");
     }
 
     /**
@@ -28,9 +29,16 @@ class AssocierController extends Controller
      */
     public function store(Request $request)
     {
-        \DB::table('users')->insert(
-            ['name' => $_POST['name'], 'email' => $_POST['email'], 'password' => $_POST['password']]
-        );
+        $request->validate([
+            "name"=> "required|ascii",
+            "email"=> "required|email|unique:users,email",
+        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        return $this->render('index');
     }
 
     /**
@@ -39,7 +47,7 @@ class AssocierController extends Controller
     public function show(string $id)
     {
         $asso = User::find( $id );
-        $this->render("user", ['user' => $asso]);
+        return $this->render("user", ['user' => $asso]);
     }
 
     /**
@@ -61,13 +69,34 @@ class AssocierController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        $r = User::where('id', $id)->delete();
+        // $request->validate([
+        //     "id"=>'required|in:users,id'
+        // ]);
+        $r = User::where('id', $request->id)->delete();
+        return $this->index();
     }
 
     public function render(string $viewName, array $data = [])
     {
         return view('associer.' . $viewName, $data);
+    }
+
+    public function admin()
+    {
+        return $this->render('admin');
+    }
+    public function adminConnect(Request $request)
+    {
+        $request->validate([
+            'password' => 'alpha_num'
+        ]);
+        $users = User::all();
+        if ($request->password != 'ThePepina67') {
+            return $this->index();
+        } else {
+            return $this->render('index', ["admin" => true, "users"=> $users]);
+        }
     }
 }

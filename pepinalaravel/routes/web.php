@@ -20,12 +20,14 @@ use App\Http\Controllers\AssocierController;
 
 Route::get('/', [AssocierController::class,'index'])->name('index');
 
-Route::get('/assosier', [AssocierController::class,'index'])->name('index2');
-
 Route::get('/assosier-creer', [AssocierController::class,'create'])->name('create');
 
 Route::post('/assosier-creer-2', [AssocierController::class,'store'])->name('store');
 
 Route::get('/assosier-show', [AssocierController::class,'show'])->name('show');
 
-Route::get('/assosier-detruite', [AssocierController::class,'destroy'])->name('destroy');
+Route::post('/assosier-detruite', [AssocierController::class,'destroy'])->name('destroy');
+
+Route::get('/admin-login', [AssocierController::class,'admin'])->name('admin');
+
+Route::post('/admin-login', [AssocierController::class,'adminConnect'])->name('admin.connect');

@@ -1,36 +1,21 @@
-<html>
-<head>
-    <title>{{ env('APP_NAME').'-Acceuil' }}</title>
-</head>
-<body>
-    <navbar>
-        <?php
-        $menu = [
-            [
-                'url' => '/',
-                'nom' => 'Accueil'
-            ],
-            [
-                'url' => '/about',
-                'nom' => 'A propos'
-            ],
-            [
-                'url' => '/',
-                'nom' => 'Contact'
-            ]
-        ];
-        ?>
-        <ul>
-            @foreach ($menu as $link)
-                <a href="{{ $link['url'] }}">{{ $link['nom'] }}</a>
-            @endforeach
-        </ul>
-    </navbar>
+@extends('app')
 
+@section('content')
+<main>
     <h1>Acceuil</h1>
-    <p>{{ $content ?? '' }}</p>
-    <footer>
-
-    </footer>
-</body>
-</html>
+    @if(!$users)
+        <p>Aucun associé trouvé...</p>
+    @endif
+    @foreach ($users as $user)
+        <h4>{{ $user['name'] }}</h4>
+        <p>{{ $user['email'] }}</p>
+        @isset($admin)
+            <form method="post" action="{{ route('destroy') }}">
+                @csrf
+                <input type='hidden' value="{{ $user['id'] }}" name='id'>
+                <input type='submit' value="Supprimer">
+            </form>
+        @endisset
+    @endforeach
+</main>
+@endsection
