@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Http\Contrôleurs;
+namespace App\Http\Controllers;
 
-use Symfony\Component\HttpKernel\Controller\ControllerResolver as Controller;
+// use Symfony\Component\HttpKernel\Controller\ControllerResolver as Controller;
 
 include_once 'vendor/autoload.php';
 
-class AssocierControlleurs extends  Controller {
+class AssocierControlleurs extends Controller {
 
     function index() {
-        $new = (new AssocierControllers);
-        echo $new->rendu('index');
+        echo $this->rendu('index');
     }
 
     function create() {
-        $new = (new AssocierControllers);
-        echo $new->rendu('associer.create');
+        echo $this->rendu('associer.create');
         }
 
     function store() {

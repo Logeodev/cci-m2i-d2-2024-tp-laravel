@@ -5,7 +5,7 @@ include_once 'vendor/autoload.php';
 
 <html>
 <head>
-    <title><?php echo env('APP_NAME').'- '$title ?></title>
+    <title><?php echo env('APP_NAME').'- '. $title ?></title>
 </head>
 <body>
     <navbar>
