@@ -38,7 +38,7 @@ class AssocierController extends Controller
         $user->email = $request->email;
         $user->save();
 
-        return $this->render('index');
+        return $this->index();
     }
 
     /**
